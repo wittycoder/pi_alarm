@@ -30,6 +30,7 @@ cp -R ../* /opt/pi_alarm
 
 # Setup the init files
 cp pi_alarm pi_alarm_daemon /etc/init.d
+update-rc.d rpcbind defaults
 update-rc.d pi_alarm defaults
 update-rc.d pi_alarm_daemon defaults
 
