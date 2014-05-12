@@ -33,7 +33,7 @@ def index():
         rows = cur.fetchall()
     # Go through rows and convert days to human readable format
     templateData = {
-        'title': 'Light Clock',
+        'title': 'Pi Alarm Clock',
         'time': timestring,
         'alarms': rows,
     }
