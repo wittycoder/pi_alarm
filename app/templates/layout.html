@@ -1,0 +1,67 @@
+<!doctype html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel=stylesheet type=text/css href="{{url_for('static', filename='style.css') }}">
+  </head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <body>
+    <center>
+    {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+    {% endfor %}
+    <br>
+    <h1>The Pi Alarm Clock</h1>
+    <h2>Current clock date/time is: {{ time }}</h2>
+
+    <table id="hor-minimalist-b" WIDTH="85%" CELLPADDING="4" CELLSPACING="3">
+        <tr>
+          <td><b><i>ID</i></b></td>
+          <td><b><i>TIME (24 HR)</i></b></td>
+          <td><b><i>ACTION</i></b></td>
+          <td><b><i>REPEAT DAYS</i></b></td>
+          <td><b><i>MODIFY</i></b></td>
+        </tr>
+      {% for row in alarms %}
+            <!-- 0='id', 1='time', 2='action', 3='rep_days' -->
+        <tr>
+          <td>{{ row.0 }}</td>
+          <td>{{ row.1 }}</td>
+          <td>{{ row.2|display_type }}</td>
+          <!-- Make the numbers more human readable with names -->
+          <td>{{ row.3|display_days }}</td>
+          <td><a href="edit/{{ row.0 }}">edit</a>  <a href="delete/{{ row.0 }}">delete</a></td>
+        </tr>
+      {% else %}
+        <tr><td>No Alarms Set!</td></tr>
+      {% endfor %}
+    </table>
+    <h2>Light Turn On/Off</h2>
+    <form action="/turnon" method="get"><input type="submit" value="Turn On"></form>
+    <form action="/turnoff" method="get"><input type="submit" value="Turn Off"></form>
+    <br>
+    <h2>Brown Noise Turn On/Off</h2>
+    <form action="/brown_turnon" method="get"><input type="submit" value="Brown Noise Turn On"></form>
+    <form action="/brown_turnoff" method="get"><input type="submit" value="Brown Noise Turn Off"></form>
+    <br>
+    <h2>Add new Alarm:</h2>
+    <form action="/create" method="get">
+      Alarm Time: Hr: <input type="text" name="hour" size="10"> 
+                  Min: <input type="text" name="min" size="10">
+      Alarm Type: <select name="type">
+                    <option value="0">Disable Alarm</option>
+                    <option value="1">Alarm</option>
+                  </select><br>
+      Repeat Days: <input type="checkbox" value="6" name="Su">Sunday
+                   <input type="checkbox" value="0" name="M">Monday
+                   <input type="checkbox" value="1" name="Tu">Tuesday
+                   <input type="checkbox" value="2" name="W">Wednesday
+                   <input type="checkbox" value="3" name="Tu">Thursday
+                   <input type="checkbox" value="4" name="F">Friday
+                   <input type="checkbox" value="5" name="Sa">Saturday
+      <br><input type="submit" value="Submit">
+    </form>
+    </center>
+
+    <script>$(".flash").hide().delay(100).fadeIn(1000).delay(4000).fadeOut(1000);</script>
+  </body>
+</html>
